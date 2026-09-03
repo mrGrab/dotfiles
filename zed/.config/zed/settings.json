@@ -101,7 +101,8 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "VSCode Dark Modern",
+    "dark": "One Dark",
+  },
   "languages": {
     "Python": {
       "format_on_save": "on",
