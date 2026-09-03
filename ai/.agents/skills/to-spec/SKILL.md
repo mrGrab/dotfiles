@@ -1,37 +1,47 @@
 ---
 name: to-spec
-description: 'Turn the current conversation into a specr: no interview, just synthesis of what you''ve already discussed.'
+description: "Turn the current conversation into a spec: no interview, just synthesis of what you've already discussed."
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a clean spec. Do NOT interview the user; synthesize what you already know.
+This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
 
 ## Process
 
 1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
 
-2. Identify the highest possible seams to test the feature. Prefer existing seams to new ones. The fewer seams across the codebase, the better (aim for one).
+2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
 
-3. **Generate a Markdown file** containing the complete spec using the template below. Use the `write_file` tool to save it into the repository (e.g., in a `docs/` directory or root documentation folder with a relevant filename like `docs/feature-name.md`). Do not just print the text in the chat—it must be written to disk.
+Check with the user that these seams match their expectations.
+
+3. Write the spec using the template below
 
 <spec-template>
 
 ## Problem Statement
 
-The problem the user is facing, described from the user's perspective.
+The problem that the user is facing, from the user's perspective.
 
 ## Solution
 
-The proposed solution, described from the user's perspective.
+The solution to the problem, from the user's perspective.
 
 ## User Stories
 
-A concise, numbered list of user stories covering the core requirements:
-1. As an <actor>, I want <feature>, so that <benefit>
+A LONG, numbered list of user stories. Each user story should be in the format of:
+
+1. As an <actor>, I want a <feature>, so that <benefit>
+
+<user-story-example>
+1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
+</user-story-example>
+
+This list of user stories should be extremely extensive and cover all aspects of the feature.
 
 ## Implementation Decisions
 
-Key implementation decisions made, including:
+A list of implementation decisions that were made. This can include:
+
 - The modules that will be built/modified
 - The interfaces of those modules that will be modified
 - Technical clarifications from the developer
@@ -59,6 +69,5 @@ A description of the things that are out of scope for this spec.
 ## Further Notes
 
 Any further notes about the feature.
-
 
 </spec-template>
