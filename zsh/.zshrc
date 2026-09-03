@@ -140,7 +140,7 @@ bindkey -e
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ls='ls --color=auto'
-alias ll='ls -laFhtr'
+alias ll='ls -lFhtr'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'

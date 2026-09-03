@@ -1,0 +1,14 @@
+{
+  "clock": {
+    "calendar": {
+      "on-scroll": 1,
+      "mode-mon-col": 4,
+      "format": {
+        "months": "<b>{}</b>",
+        "days": "<span>{}</span>",
+        "weekdays": "<span>{}</span>",
+        "today": "<span color='FireBrick'><b>{}</b></span>"
+      }
+    }
+  }
+}

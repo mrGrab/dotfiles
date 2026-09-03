@@ -1,0 +1,28 @@
+{
+  "layer": "top",
+  "output": "DP-1",
+  "position": "top",
+  "reload_style_on_change": true,
+
+  "include": [
+    "~/.config/waybar/modules/clock.json",
+    "~/.config/waybar/modules/clock/calendar.json",
+    "~/.config/waybar/modules/workspaces.json",
+    "~/.config/waybar/modules/language.json",
+    "~/.config/waybar/modules/wireplumber.json",
+    "~/.config/waybar/modules/custom/power.json",
+    "~/.config/waybar/modules/custom/notification.json",
+    "~/.config/waybar/modules/custom/weather.json",
+    "~/.config/waybar/modules/tray.json",
+  ],
+
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock", "custom/weather"],
+  "modules-right": [
+    "tray",
+    "hyprland/language",
+    "wireplumber",
+    "custom/notification",
+    "custom/power",
+  ],
+}

@@ -1,0 +1,11 @@
+/* --- Color & Style Definitions --- */
+@define-color bar_bg alpha(black, 0.12); /* A slightly more opaque background for readability */
+@define-color bar_fg #f5f5f5; /* WhiteSmoke, for all default text */
+@define-color module_hover_bg alpha(@bar_fg, 0.15);
+@define-color module_active_bg #00bcd4; /* A vibrant cyan for active states */
+@define-color workspace_active_bg alpha(@bar_fg, 0.7);
+@define-color workspace_active_fg #1e1e2e;
+@define-color warning_color #ff5252; /* A modern red for warnings/disconnected */
+@define-color charging_color #43a047; /* A pleasant green for charging */
+@define-color tooltip_bg alpha(@bar_fg, 0.95);
+@define-color tooltip_fg #1e1e2e;

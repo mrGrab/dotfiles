@@ -1,0 +1,10 @@
+{
+  "custom/weather": {
+    "exec-if": "test -n \"$GOOGLE_API_KEY\" && command -v python3 >/dev/null && python3 -c 'import click, requests'",
+    "exec": "~/.config/waybar/scripts/custom-weather.py --latitude='50.50707' --longitude='30.22592'",
+    "return-type": "json",
+    "interval": 900,
+    "format": "{}",
+    "escape": false
+  }
+}

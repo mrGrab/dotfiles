@@ -1,0 +1,128 @@
+/*
+ * ## Waybar Style
+*/
+@import "colors.css";
+
+/* --- General --- */
+* {
+    font-family: "Noto Sans", "NotoSans NFP Med", sans-serif;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* --- The Bar Itself --- */
+window#waybar {
+    background: @bar_bg;
+    color: @bar_fg;
+}
+
+/* --- Tooltips & Menus --- */
+tooltip,
+menu {
+    background: @tooltip_bg;
+    color: @tooltip_fg;
+    border: 1px solid alpha(black, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+tooltip label,
+menu menuitem {
+    color: @tooltip_fg;
+    padding: 4px 8px;
+}
+
+/* --- General Module Styling --- */
+#workspaces,
+#clock,
+#custom-weather,
+#tray,
+#wireplumber,
+#custom-power,
+#custom-notification,
+#language {
+    background-color: transparent;
+    color: @bar_fg;
+    padding: 0px 8px;
+    margin: 3px 2px;
+    border-radius: 8px;
+    min-height: 22px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+#wireplumber,
+#custom-power,
+#custom-notification,
+#language {
+    font-size: 16px;
+    min-width: 20px;
+}
+
+/* --- Module Hover Effect --- */
+#clock:hover,
+#wireplumber:hover,
+#custom-weather:hover,
+#custom-power:hover,
+#custom-notification:hover,
+#language:hover {
+    background-color: @module_hover_bg;
+}
+
+/* --- Workspaces --- */
+#workspaces {
+    background-color: transparent;
+    padding: 0;
+    margin: 3px 2px;
+}
+
+#workspaces button {
+    padding: 0px 10px;
+    font-weight: 600;
+    color: @bar_fg;
+    transition: all 0.2s ease;
+    min-width: 28px;
+    min-height: 24px;
+}
+
+#workspaces button:hover {
+    background-color: @module_hover_bg;
+    border-radius: 8px;
+}
+
+#workspaces button.active {
+    background-color: @workspace_active_bg;
+    color: @workspace_active_fg;
+    border-radius: 8px;
+}
+
+#workspaces button.urgent {
+    background-color: @warning_color;
+    color: @bar_fg;
+    border-radius: 8px;
+}
+
+/* --- Module States & Specifics --- */
+#clock {
+    font-weight: 600;
+}
+#custom-weather {
+    font-weight: 600;
+}
+
+#language {
+    background-color: @bar_fg;
+    color: @tooltip_fg;
+    border-radius: 6px;
+    font-weight: 700;
+    padding: 0px 6px 2px 6px;
+}
+
+#language:hover {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+#tray {
+    min-width: 0;
+}

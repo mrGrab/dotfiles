@@ -1,0 +1,15 @@
+{
+  "wireplumber": {
+    "format": "{icon}",
+    "format-muted": "󰝟",
+    "format-icons": ["󰕿", "󰖀", "󰕾"],
+    "min-length": 2,
+    "max-length": 2,
+    "on-click-right": "pavucontrol",
+    "on-click-middle": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "max-volume": 100,
+    "scroll-step": 5,
+    "tooltip": true,
+    "tooltip-format": "{volume}%"
+  }
+}

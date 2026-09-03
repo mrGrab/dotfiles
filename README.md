@@ -43,7 +43,7 @@ stow -D -t ~ kitty
 ```
 
 > [!NOTE]
->If an existing non-symlinked file already exists in `~/.config/<package>`, stow will refuse to overwrite it to prevent data loss. Move or back up the target file first.
+> If an existing non-symlinked file already exists in `~/.config/<package>`, stow will refuse to overwrite it to prevent data loss. Move or back up the target file first.
 
 ### How to Import an Existing Config
 

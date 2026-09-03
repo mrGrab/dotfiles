@@ -1,0 +1,16 @@
+{
+  "hyprland/workspaces": {
+    "format": "{id}{windows}",
+    "show-special": false,
+    "on-click": "activate",
+    "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })' 1>/dev/null",
+    "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })' 1>/dev/null",
+    "workspaces": true,
+    "all-outputs": true,
+    "workspace-taskbar": {
+      "enable": true,
+      "update-active-window": false,
+      "format": " {icon}"
+    }
+  }
+}
