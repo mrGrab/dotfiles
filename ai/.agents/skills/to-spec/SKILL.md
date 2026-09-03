@@ -1,0 +1,64 @@
+---
+name: to-spec
+description: 'Turn the current conversation into a specr: no interview, just synthesis of what you''ve already discussed.'
+disable-model-invocation: true
+---
+
+This skill takes the current conversation context and codebase understanding and produces a clean spec. Do NOT interview the user; synthesize what you already know.
+
+## Process
+
+1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
+
+2. Identify the highest possible seams to test the feature. Prefer existing seams to new ones. The fewer seams across the codebase, the better (aim for one).
+
+3. **Generate a Markdown file** containing the complete spec using the template below. Use the `write_file` tool to save it into the repository (e.g., in a `docs/` directory or root documentation folder with a relevant filename like `docs/feature-name.md`). Do not just print the text in the chat—it must be written to disk.
+
+<spec-template>
+
+## Problem Statement
+
+The problem the user is facing, described from the user's perspective.
+
+## Solution
+
+The proposed solution, described from the user's perspective.
+
+## User Stories
+
+A concise, numbered list of user stories covering the core requirements:
+1. As an <actor>, I want <feature>, so that <benefit>
+
+## Implementation Decisions
+
+Key implementation decisions made, including:
+- The modules that will be built/modified
+- The interfaces of those modules that will be modified
+- Technical clarifications from the developer
+- Architectural decisions
+- Schema changes
+- API contracts
+- Specific interactions
+
+Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
+
+Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+
+## Testing Decisions
+
+A list of testing decisions that were made. Include:
+
+- A description of what makes a good test (only test external behavior, not implementation details)
+- Which modules will be tested
+- Prior art for the tests (i.e. similar types of tests in the codebase)
+
+## Out of Scope
+
+A description of the things that are out of scope for this spec.
+
+## Further Notes
+
+Any further notes about the feature.
+
+
+</spec-template>
