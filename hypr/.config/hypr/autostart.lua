@@ -1,0 +1,1 @@
+-- Autostart commands can be registered with hl.on("hyprland.start", function() ... end).
