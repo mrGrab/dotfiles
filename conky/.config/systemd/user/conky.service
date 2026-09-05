@@ -1,0 +1,16 @@
+[Unit]
+Description=Conky system monitor
+Documentation=man:conky(1)
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/hyprctl dispatch 'hl.dsp.focus({ monitor = "DP-1" })'
+ExecStart=/usr/bin/conky --quiet --pause=3 --config=%h/.config/conky/conkyrc
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target
