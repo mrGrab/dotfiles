@@ -3,6 +3,7 @@
     "format": "{short}",
     "min-length": 2,
     "max-length": 2,
-    "on-click": "hyprctl switchxkblayout current next > /dev/null"
+    "on-click": "hyprctl switchxkblayout current next > /dev/null",
+    "hide-single-layout": true
   }
 }

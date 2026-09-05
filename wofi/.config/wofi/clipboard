@@ -1,0 +1,10 @@
+show=dmenu
+prompt=Clipboard
+width=500
+height=0
+lines=12
+dynamic_lines=true
+insensitive=true
+allow_images=true
+allow_markup=false
+image_size=24

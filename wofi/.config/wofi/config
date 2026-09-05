@@ -1,0 +1,10 @@
+show=drun
+width=500
+height=500
+use_search_box=false
+insensitive=true
+allow_images=true
+allow_markup=true
+parse_search=true
+drun-ignore_metadata=true
+prompt=  Search

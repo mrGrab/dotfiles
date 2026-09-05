@@ -7,11 +7,36 @@ hl.bind(mainMod .. " + grave", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exit())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + V", hl.dsp.window.center())
+hl.bind(mainMod .. " + V", function()
+    local window = hl.get_active_window()
+    if window == nil then
+        return
+    end
+
+    if window.floating then
+        hl.dispatch(hl.dsp.window.float({ action = "unset", window = window }))
+        return
+    end
+
+    local monitor = hl.get_active_monitor()
+    hl.dispatch(hl.dsp.window.float({ action = "set", window = window }))
+
+    if monitor ~= nil then
+        hl.dispatch(hl.dsp.window.resize({
+            x = math.floor(monitor.width * 0.97),
+            y = math.floor(monitor.height * 0.97),
+            window = window,
+        }))
+        hl.dispatch(hl.dsp.window.center({ window = window }))
+    end
+end)
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+hl.bind(mainMod .. " + SHIFT + V",
+    hl.dsp.exec_cmd("cliphist list | wofi --conf $HOME/.config/wofi/clipboard | cliphist decode | wl-copy"))
+hl.bind(mainMod .. " + SHIFT + DELETE",
+    hl.dsp.exec_cmd("cliphist list | wofi --conf $HOME/.config/wofi/clipboard | cliphist delete"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
+-- hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 
@@ -61,5 +86,5 @@ hl.bind("ALT + SHIFT + 3", hl.dsp.exec_cmd(snapshot .. "region"))
 hl.bind("ALT + SHIFT + 4", hl.dsp.exec_cmd(snapshot .. "window"))
 hl.bind("ALT + SHIFT + 5", hl.dsp.exec_cmd(snapshot .. "output"))
 hl.bind(mainMod .. " + i", hl.dsp.exec_cmd("swaync-client -t -sw"))
-hl.bind(mainMod .. " + t", hl.dsp.exec_cmd("~/bin/translate.sh"))
+hl.bind(mainMod .. " + t", hl.dsp.exec_cmd("$HOME/bin/translate.sh"))
 hl.bind("ALT + TAB", hl.dsp.window.swap({ next = true }))

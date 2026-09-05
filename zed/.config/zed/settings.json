@@ -8,24 +8,41 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "agent_servers": {
+    "claude-acp": {
+      "default_config_options": {
+        "fast": true,
+        "model": "sonnet",
+      },
+      "type": "registry",
+    },
+    "codex-acp": {
+      "default_config_options": {
+        "mode": "read-only",
+        "model": "gpt-5.6-luna",
+      },
+      "type": "registry",
+    },
+    "gemini": {
+      "type": "registry",
+    },
     "github-copilot-cli": {
       "default_config_options": {
         "reasoning_effort": "medium",
         "agent": "",
-        "model": "auto"
+        "model": "auto",
       },
-      "type": "registry"
-    }
+      "type": "registry",
+    },
   },
   "git": {
     "diff_base": "head",
     "path_style": "file_path_first",
     "file_diff": {
-      "show_full_file": true
+      "show_full_file": true,
     },
     "inline_blame": {
-      "show_commit_summary": false
-    }
+      "show_commit_summary": false,
+    },
   },
   "git_panel": {
     "show_count_badge": false,
@@ -33,44 +50,43 @@
     "status_style": "icon",
     "tree_view": true,
     "dock": "left",
-    "collapse_untracked_name": true,
-    "fallback_branch_name": "master"
+    "fallback_branch_name": "master",
   },
   "which_key": {
-    "enabled": false
+    "enabled": false,
   },
   "diff_view_style": "split",
   "edit_predictions": {
     "allow_data_collection": "no",
     "provider": "ollama",
     "ollama": {
-      "model": "qwen2.5-coder:1.5b"
-    }
+      "model": "qwen2.5-coder:1.5b",
+    },
   },
   "agent": {
     "single_file_review": false,
     "tool_permissions": {
       "tools": {
         "search_web": {
-          "default": "allow"
+          "default": "allow",
         },
         "skill": {
-          "default": "allow"
-        }
-      }
+          "default": "allow",
+        },
+      },
     },
     "dock": "right",
     "default_model": {
       "provider": "copilot_chat",
       "model": "auto",
-      "enable_thinking": true
+      "enable_thinking": true,
     },
     "sidebar_side": "right",
     "favorite_models": [],
-    "model_parameters": []
+    "model_parameters": [],
   },
   "tabs": {
-    "git_status": false
+    "git_status": false,
   },
   "project_panel": {
     "git_status_indicator": true,
@@ -82,7 +98,7 @@
     "entry_spacing": "standard",
     "default_width": 240.0,
     "dock": "left",
-    "button": true
+    "button": true,
   },
   "auto_update": false,
   "buffer_line_height": "standard",
@@ -90,10 +106,10 @@
   "telemetry": {
     "diagnostics": true,
     "metrics": false,
-    "anthropic_retention": false
+    "anthropic_retention": false,
   },
   "session": {
-    "trust_all_worktrees": true
+    "trust_all_worktrees": true,
   },
   "ui_font_size": 16,
   "buffer_font_size": 15,
@@ -103,17 +119,18 @@
     "light": "One Light",
     "dark": "One Dark",
   },
+  "format_on_save": "on",
   "languages": {
     "Python": {
       "format_on_save": "on",
       "code_actions_on_format": {
-        "source.organizeImports.ruff": true
+        "source.organizeImports.ruff": true,
       },
       "formatter": {
         "language_server": {
-          "name": "ruff"
-        }
-      }
-    }
-  }
+          "name": "ruff",
+        },
+      },
+    },
+  },
 }
