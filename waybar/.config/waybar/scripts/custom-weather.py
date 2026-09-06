@@ -12,7 +12,7 @@ Requirements:
 
 import json
 import sys
-from datetime import datetime
+import time
 
 import click
 import requests
@@ -75,11 +75,8 @@ def get_icon(condition_type: str, is_daytime: bool) -> str:
     icon = WEATHER_ICONS.get(condition_type.upper(), WEATHER_ICONS["DEFAULT"])
 
     # Basic day/night tweak
-    if not is_daytime:
-        if icon == "☀️":
-            icon = "🌙"
-        elif icon == "🌤️":
-            icon = "🌙"
+    if not is_daytime and icon in ("☀️", "🌤️"):
+        icon = "🌙"
     return icon
 
 
@@ -101,7 +98,7 @@ def format_unit(unit: str) -> str:
 
 def fetch_weather(api_key, latitude, longitude, units):
     """Fetch weather data from Google Weather API."""
-    url = f"https://weather.googleapis.com/v1/currentConditions:lookup"
+    url = "https://weather.googleapis.com/v1/currentConditions:lookup"
 
     params = {
         "key": api_key,
@@ -147,7 +144,7 @@ def format_output(data):
         tooltip.append(f"<b><span size='large'>{icon} {condition_text}</span></b>")
 
         # Temperature section
-        tooltip.append(f"\n<b>🌡️ Temperature</b>")
+        tooltip.append("\n<b>🌡️ Temperature</b>")
         tooltip.append(f"  Current:\t<tt>{temp}{unit_char}</tt>")
 
         if feels_like := data.get("feelsLikeTemperature", {}).get("degrees"):
@@ -167,7 +164,7 @@ def format_output(data):
             tooltip.append(f"  Heat Index:\t<tt>{heat_index}{unit_char}</tt>")
 
         # Atmosphere Section
-        tooltip.append(f"\n<b>🌬️ Atmosphere</b>")
+        tooltip.append("\n<b>🌬️ Atmosphere</b>")
 
         if humidity := data.get("relativeHumidity"):
             tooltip.append(f"  Humidity:\t<tt>{humidity}%</tt>")
@@ -190,7 +187,7 @@ def format_output(data):
 
         # Wind Section
         if wind := data.get("wind"):
-            tooltip.append(f"\n<b>💨 Wind</b>")
+            tooltip.append("\n<b>💨 Wind</b>")
 
             if speed := wind.get("speed", {}).get("value"):
                 speed_unit = format_unit(wind.get("speed", {}).get("unit"))
@@ -201,7 +198,7 @@ def format_output(data):
                 tooltip.append(f"  Gusts:\t\t<tt>up to {gust} {gust_unit}</tt>")
 
         # Precipitation Section
-        tooltip.append(f"\n<b>💧 Precipitation</b>")
+        tooltip.append("\n<b>💧 Precipitation</b>")
         precip = data.get("precipitation", {})
         if prob := precip.get("probability", {}).get("percent"):
             prob_type = (
@@ -221,7 +218,7 @@ def format_output(data):
             tooltip.append(f"  Thunder:\t<tt>{thunder_prob}% chance</tt>")
 
         # Timestamp - when data was pulled
-        current_time = datetime.now().strftime("%H:%M:%S")
+        current_time = time.strftime("%H:%M:%S")
         tooltip.append(f"\n<i><small>Data pulled:\t{current_time}</small></i>")
 
         final_tooltip = "\n".join(tooltip)

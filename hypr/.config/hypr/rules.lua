@@ -18,9 +18,9 @@ rule({
     name = "windowrule-7",
     tag = "+floating-window",
     match = {
-        class = "(xdg-desktop-portal-gtk|sublime_text|DesktopEditors|org.gnome.Nautilus)",
+        class = "(xdg-desktop-portal-gtk|sublime_text|DesktopEditors|org.gnome.Nautilus|dev\\.zed\\.Zed)",
         title =
-        "^(Open.*Files?|Open [Ff]older.*|Save.*Files?|Save.*As|Save|All Files|.*wants to (open|save).*|[Cc]hoose.*)",
+        "^(Open.*Files?|Open [Ff]older.*|Save.*Files?|Save.*As|Save|All Files|.*wants to (open|save).*|[Cc]hoose.*|.* — [Ss]ettings)",
     },
 })
 rule({ name = "windowrule-8", float = true, center = true, match = { class = "org.gnome.Calculator" } })

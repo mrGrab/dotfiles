@@ -7,12 +7,20 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "terminal": {
+    "copy_on_select": true
+  },
   "agent_servers": {
     "claude-acp": {
       "default_config_options": {
         "mode": "auto",
         "fast": true,
-        "model": "sonnet",
+        "model": "default",
       },
       "type": "registry",
     },
@@ -59,7 +67,7 @@
   "diff_view_style": "split",
   "edit_predictions": {
     "allow_data_collection": "no",
-    "provider": "ollama",
+    "provider": "zed",
     "ollama": {
       "model": "qwen2.5-coder:1.5b",
     },
@@ -115,11 +123,7 @@
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "remove_trailing_whitespace_on_save": true,
-  "theme": {
-    "mode": "system",
-    "light": "One Light",
-    "dark": "One Dark",
-  },
+  "theme": "One Dark Pro",
   "format_on_save": "on",
   "languages": {
     "Python": {

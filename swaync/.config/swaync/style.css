@@ -1,0 +1,52 @@
+/*
+ * ## SwayNC Style
+ *
+ * Thin override on top of the packaged theme. Import the distro default,
+ * then only redefine what actually differs. Keeps this file small and
+ * prevents silent drift when swaync updates its base stylesheet.
+ */
+@import "/etc/xdg/swaync/style.css";
+
+/* --- Theme tokens (swaync >= 0.10, GTK4) --- */
+:root {
+    --cc-bg: rgba(46, 46, 46, 0.6);
+    --noti-bg-alpha: 0.95;
+    --noti-bg-alt: rgb(42, 42, 42); /* referenced by .per-app-volume but undefined upstream */
+    --noti-bg-focus: transparent;
+    --text-color: rgb(245, 245, 245);
+    --bg-selected: transparent;
+    --notification-icon-size: 32px;
+    --font-size-body: 14px;
+    --mpris-album-art-icon-size: 48px;
+}
+
+/* --- Notifications --- */
+.notification-row .notification-background .notification .notification-default-action {
+    padding: 10px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+    font-size: var(--font-size-body);
+    font-weight: lighter;
+}
+
+.notification-group .notification-group-headers .notification-group-header {
+    font-size: var(--font-size-summary);
+}
+
+/* --- Widgets --- */
+.widget-title > button {
+    color: var(--text-color);
+}
+
+.widget-mpris .widget-mpris-player {
+    margin: 16px 0;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay {
+    padding: 8px;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay > box > button {
+    color: var(--text-color);
+}
