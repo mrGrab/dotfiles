@@ -10,7 +10,7 @@
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
-    "dark": "Zed (Default)"
+    "dark": "Material Icon Theme"
   },
   "terminal": {
     "copy_on_select": true
@@ -66,14 +66,20 @@
   },
   "diff_view_style": "split",
   "edit_predictions": {
-    "allow_data_collection": "no",
+    "allow_data_collection": "yes",
     "provider": "zed",
     "ollama": {
       "model": "qwen2.5-coder:1.5b",
     },
   },
   "agent": {
-    "single_file_review": false,
+    "thinking_display": "preview",
+    "auto_compact": {
+      "threshold": "70%"
+    },
+    "expand_terminal_card": false,
+    "use_modifier_to_send": false,
+    "single_file_review": true,
     "tool_permissions": {
       "tools": {
         "search_web": {
@@ -123,7 +129,7 @@
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "remove_trailing_whitespace_on_save": true,
-  "theme": "One Dark Pro",
+  "theme": "Nightfox - opaque",
   "format_on_save": "on",
   "languages": {
     "Python": {

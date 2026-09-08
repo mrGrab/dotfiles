@@ -45,3 +45,24 @@ rule({ name = "windowrule-13", no_initial_focus = true, match = { class = "(Zoom
 rule({ name = "windowrule-14", move = { "cursor_x-(window_w*0.5)", "cursor_y-(window_h*0.5)" }, match = { class = "(Zoom Workplace)", initial_title = "(sub menu window)" } })
 rule({ name = "windowrule-15", float = true, size = { 1600, 900 }, center = true, match = { class = "^(blender)$" } })
 rule({ name = "windowrule-16", float = true, center = true, match = { class = "^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$" } })
+rule({
+    name = "windowrule-18",
+    float = true,
+    center = true,
+    size = { 1100, 800 },
+    match = {
+        class = "^(md\\.obsidian\\.Obsidian)$",
+        initial_title = "^(Settings - .* - Obsidian .*)$",
+    },
+})
+rule({
+    name = "windowrule-17",
+    float = true,
+    center = true,
+    size = { 1440, 918 },
+    suppress_event = "maximize fullscreen",
+    match = {
+        class = "^(org\\.telegram\\.desktop)$",
+        initial_title = "^(Media viewer)$",
+    },
+})
