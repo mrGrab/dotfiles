@@ -1,0 +1,12 @@
+theme = Ayu Mirage
+
+background-opacity = 0.95
+clipboard-paste-protection = false
+copy-on-select = clipboard
+shell-integration = zsh
+app-notifications = no-clipboard-copy,config-reload
+
+keybind = alt+shift+d=new_split:down
+keybind = alt+d=new_split:right
+keybind = alt+q=quit
+keybind = ctrl+t=new_tab
