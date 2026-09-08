@@ -2,13 +2,27 @@ local function rule(config)
     hl.window_rule(config)
 end
 
-rule({ name = "windowrule-1", suppress_event = "maximize", match = { class = ".*" } })
+rule({
+    name = "windowrule-1",
+    suppress_event = "maximize",
+    match = { class = ".*" },
+})
+
 rule({
     name = "windowrule-2",
     no_focus = true,
-    match = { class = "^$", title = "^$", xwayland = true, float = true, fullscreen = false, pin = false },
+    match = {
+        class = "^$",
+        title = "^$",
+        xwayland = true,
+        float = true,
+        fullscreen = false,
+        pin = false,
+    },
 })
+
 rule({ name = "windowrule-3", animation = "popin", match = { class = "kitty" } })
+
 hl.layer_rule({ name = "layerrule-1", blur = true, animation = "slide right", ignore_alpha = 0, match = { namespace = "swaync-control-center" } })
 hl.layer_rule({ name = "layerrule-2", ignore_alpha = 0, match = { namespace = "swaync-notification-window" } })
 rule({ name = "windowrule-4", opacity = "0.95 0.85", match = { class = "^(org.gnome.Nautilus)$" } })

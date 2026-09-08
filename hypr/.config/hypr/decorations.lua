@@ -1,6 +1,8 @@
 hl.config({
     general = {
         gaps_in = 5,
+        gaps_out = 20,
+
         border_size = 1,
         col = {
             active_border = { colors = { "rgba(33ccffee)", "rgba(00ff99ee)" }, angle = 45 },
@@ -8,17 +10,17 @@ hl.config({
         },
         resize_on_border = true,
         allow_tearing = false,
-        layout = "master",
     },
     decoration = {
-        rounding = 9,
+        rounding = 10,
         rounding_power = 2,
 
-        active_opacity = 1,
+        active_opacity = 1.0,
         inactive_opacity = 0.95,
 
         dim_inactive = true,
         dim_strength = 0.01,
+
         shadow = {
             enabled = true,
             range = 4,
@@ -31,40 +33,51 @@ hl.config({
             passes = 1,
             vibrancy = 0.1696,
             special = false
-        },
-    },
-    dwindle = { preserve_split = true },
-    master = {
-        new_status = "master",
-        orientation = "right",
-        mfact = 0.60,
-        new_on_top = false,
-        focus_master_on_close = true
-    },
-    misc = {
-        force_default_wallpaper = 0,
-        animate_manual_resizes = true,
-        disable_hyprland_logo = true,
-        middle_click_paste = true,
-        disable_autoreload = false
-    },
-    input = {
-        kb_layout = "us,ua",
-        kb_variant = "",
-        kb_model = "",
-        kb_options = "grp:alt_space_toggle",
-        kb_rules = "",
-        numlock_by_default = true,
-        follow_mouse = 2,
-        sensitivity = 0,
-        touchpad = { natural_scroll = false },
+        }
     },
     cursor = {
         invisible = false,
         inactive_timeout = 10
     },
-    ecosystem = {
-        no_update_news = true,
-        no_donation_nag = true
-    }
+
 })
+
+local curves = {
+    { "easeOutQuint",   { 0.23, 1 },    { 0.32, 1 } },
+    { "easeInOutCubic", { 0.65, 0.05 }, { 0.36, 1 } },
+    { "linear",         { 0, 0 },       { 1, 1 } },
+    { "almostLinear",   { 0.5, 0.5 },   { 0.75, 1 } },
+    { "quick",          { 0.15, 0 },    { 0.1, 1 } },
+}
+for _, curve in ipairs(curves) do
+    hl.curve(curve[1], { type = "bezier", points = { curve[2], curve[3] } })
+end
+
+local animations
+= {
+    { "global",              10,   "default",      nil },
+    { "border",              5.39, "easeOutQuint", nil },
+    { "windows",             4.79, "easeOutQuint", nil },
+    { "windowsIn",           4.1,  "easeOutQuint", "popin 87%" },
+    { "windowsOut",          1.49, "linear",       "popin 87%" },
+    { "fadeIn",              1.73, "almostLinear", nil },
+    { "fadeOut",             1.46, "almostLinear", nil },
+    { "fade",                3.03, "quick",        nil },
+    { "layers",              3.81, "easeOutQuint", nil },
+    { "layersIn",            4,    "easeOutQuint", "fade" },
+    { "layersOut",           1.5,  "linear",       "fade" },
+    { "fadeLayersIn",        1.79, "almostLinear", nil },
+    { "fadeLayersOut",       1.39, "almostLinear", nil },
+    { "workspaces",          1.94, "almostLinear", "slide 75%" },
+    { "workspacesIn",        1.21, "almostLinear", "slide 75%" },
+    { "workspacesOut",       1.94, "almostLinear", "slide 75%" },
+    { "specialWorkspace",    1.94, "almostLinear", "fade" },
+    { "specialWorkspaceIn",  1.21, "almostLinear", "fade" },
+    { "specialWorkspaceOut", 1.94, "almostLinear", "fade" },
+    { "zoomFactor",          7,    "quick",        nil },
+}
+for _, animation in ipairs(animations) do
+    local config = { leaf = animation[1], enabled = true, speed = animation[2], bezier = animation[3] }
+    if animation[4] then config.style = animation[4] end
+    hl.animation(config)
+end
