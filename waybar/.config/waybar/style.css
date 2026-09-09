@@ -7,7 +7,6 @@
 * {
     font-family: "Noto Sans", "NotoSans NFP Med", sans-serif;
     font-size: 14px;
-    transition: background-color 0.3s ease;
 }
 
 /* --- The Bar Itself --- */
@@ -21,7 +20,7 @@ tooltip,
 menu {
     background: @tooltip_bg;
     color: @tooltip_fg;
-    border: 1px solid alpha(black, 0.1);
+    border: 1px solid @tooltip_border;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -33,14 +32,14 @@ menu menuitem {
 }
 
 /* --- General Module Styling --- */
-#workspaces,
 #clock,
 #custom-weather,
 #tray,
 #wireplumber,
 #custom-power,
 #custom-notification,
-#language {
+#language,
+#window {
     background-color: transparent;
     color: @bar_fg;
     padding: 0px 8px;
@@ -66,7 +65,8 @@ menu menuitem {
 #custom-weather:hover,
 #custom-power:hover,
 #custom-notification:hover,
-#language:hover {
+#language:hover,
+#window:hover {
     background-color: @module_hover_bg;
 }
 
@@ -120,9 +120,25 @@ menu menuitem {
 }
 
 #language:hover {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: alpha(@bar_fg, 0.85);
 }
 
 #tray {
+    min-width: 0;
+}
+
+/* --- Window Title --- */
+#window {
+    font-style: italic;
+    color: alpha(@bar_fg, 0.85);
+    border-left: 1px solid alpha(@bar_fg, 0.15);
+    padding-left: 12px;
+}
+
+/* Collapse to nothing when no window is focused (waybar adds .empty) */
+#window.empty {
+    border-left: 0;
+    padding: 0;
+    margin: 0;
     min-width: 0;
 }

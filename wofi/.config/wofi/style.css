@@ -1,7 +1,13 @@
 /* Color Palette */
 @define-color theme_fg #2c3e50; /* Dark, slate-gray text */
 @define-color theme_accent #5294e2; /* Blue for selections */
-@define-color selected_fg #ffffff; /* White text on the accent color */
+@define-color on_accent_fg #ffffff; /* Text/icons on the accent color */
+
+/* Surfaces */
+@define-color list_bg rgba(245, 245, 245, 0.9); /* Results list */
+@define-color input_bg rgba(255, 255, 255, 0.7); /* Search field */
+@define-color input_bg_focus #ffffff; /* Search field, focused */
+@define-color entry_hover_bg rgba(0, 0, 0, 0.05);
 
 /* Global Settings */
 * {
@@ -19,7 +25,7 @@ window {
 
 /* Search Bar */
 #input {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: @input_bg;
     color: @theme_fg;
     padding: 5px 15px;
     margin-bottom: 8px;
@@ -30,13 +36,13 @@ window {
 }
 
 #input:focus {
-    background-color: @selected_fg;
+    background-color: @input_bg_focus;
     border-color: @theme_accent;
 }
 
 /* Main Results List */
 #inner-box {
-    background-color: rgba(245, 245, 245, 0.9);
+    background-color: @list_bg;
     border-radius: 8px;
     padding: 8px;
 }
@@ -53,7 +59,7 @@ window {
 }
 
 #entry:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: @entry_hover_bg;
 }
 
 #entry:selected {
@@ -80,5 +86,5 @@ window {
 
 #entry:selected #text,
 #entry:selected #img {
-    color: @selected_fg;
+    color: @on_accent_fg;
 }

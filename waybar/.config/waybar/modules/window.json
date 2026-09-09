@@ -1,0 +1,15 @@
+{
+  "hyprland/window": {
+    "format": "{title}",
+    "separate-outputs": false,
+    "max-length": 60,
+    "rewrite": {
+      "(.*) — Mozilla Firefox": "$1",
+      "(.*) - Visual Studio Code": "$1",
+      "(.*) - Chromium": "$1",
+      "(.*) - Obsidian": "$1"
+    },
+    "icon": false,
+    "tooltip": false
+  }
+}

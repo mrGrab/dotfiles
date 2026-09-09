@@ -9,3 +9,4 @@
 @define-color charging_color #43a047; /* A pleasant green for charging */
 @define-color tooltip_bg alpha(@bar_fg, 0.95);
 @define-color tooltip_fg #1e1e2e;
+@define-color tooltip_border alpha(black, 0.1);

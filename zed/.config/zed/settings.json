@@ -10,10 +10,10 @@
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
-    "dark": "Material Icon Theme"
+    "dark": "Material Icon Theme",
   },
   "terminal": {
-    "copy_on_select": true
+    "copy_on_select": true,
   },
   "agent_servers": {
     "claude-acp": {
@@ -75,7 +75,7 @@
   "agent": {
     "thinking_display": "preview",
     "auto_compact": {
-      "threshold": "70%"
+      "threshold": "70%",
     },
     "expand_terminal_card": false,
     "use_modifier_to_send": false,
@@ -143,5 +143,28 @@
         },
       },
     },
+    "Ansible": {
+      "semantic_tokens": "combined",
+    },
+  },
+  "file_types": {
+    "Ansible": [
+      "**.ansible.yml",
+      "**.ansible.yaml",
+      "**/defaults/*.yml",
+      "**/defaults/*.yaml",
+      "**/meta/*.yml",
+      "**/meta/*.yaml",
+      "**/tasks/*.yml",
+      "**/tasks/*.yaml",
+      "**/handlers/*.yml",
+      "**/handlers/*.yaml",
+      "**/group_vars/*.yml",
+      "**/group_vars/*.yaml",
+      "**/playbooks/*.yaml",
+      "**/playbooks/*.yml",
+      "**playbook*.yaml",
+      "**playbook*.yml",
+    ],
   },
 }

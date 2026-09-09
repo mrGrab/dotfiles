@@ -8,6 +8,7 @@
     "~/.config/waybar/modules/clock.json",
     "~/.config/waybar/modules/clock/calendar.json",
     "~/.config/waybar/modules/workspaces.json",
+    "~/.config/waybar/modules/window.json",
     "~/.config/waybar/modules/language.json",
     "~/.config/waybar/modules/wireplumber.json",
     "~/.config/waybar/modules/custom/power.json",
@@ -16,7 +17,7 @@
     "~/.config/waybar/modules/tray.json",
   ],
 
-  "modules-left": ["hyprland/workspaces"],
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
   "modules-center": ["clock", "custom/weather"],
   "modules-right": [
     "tray",
