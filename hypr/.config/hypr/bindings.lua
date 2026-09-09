@@ -1,6 +1,6 @@
 local terminal = "kitty"
 local fileManager = "nautilus --new-window"
-local menu = "wofi --show drun"
+local menu = "pkill -x wofi || wofi --show drun"
 local mainMod = "SUPER"
 
 hl.bind(mainMod .. " + grave", hl.dsp.exec_cmd(terminal))

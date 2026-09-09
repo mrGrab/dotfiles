@@ -8,3 +8,4 @@ insensitive=true
 allow_images=true
 allow_markup=false
 image_size=24
+close_on_focus_loss=true
