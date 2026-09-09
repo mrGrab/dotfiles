@@ -1,8 +1,15 @@
-/* --- Color & Style Definitions --- */
+/*
+ * --- Color & Style Definitions ---
+ *
+ * Canonical source for the shared desktop palette. Keep these in sync by hand:
+ *   - foreground  #f5f5f5  -> swaync --text-color, wofi @theme_fg
+ *   - accent      #5294e2  -> wofi @theme_accent
+ *   - dark base   #2e2e2e  -> swaync --cc-bg, wofi surfaces
+ */
 @define-color bar_bg alpha(black, 0.12); /* A slightly more opaque background for readability */
-@define-color bar_fg #f5f5f5; /* WhiteSmoke, for all default text */
+@define-color bar_fg #f5f5f5; /* WhiteSmoke, for all default text (shared fg) */
 @define-color module_hover_bg alpha(@bar_fg, 0.15);
-@define-color module_active_bg #00bcd4; /* A vibrant cyan for active states */
+@define-color module_active_bg #5294e2; /* Shared desktop accent (blue) */
 @define-color workspace_active_bg alpha(@bar_fg, 0.7);
 @define-color workspace_active_fg #1e1e2e;
 @define-color warning_color #ff5252; /* A modern red for warnings/disconnected */

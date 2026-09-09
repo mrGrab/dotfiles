@@ -4,20 +4,28 @@
  * Thin override on top of the packaged theme. Import the distro default,
  * then only redefine what actually differs. Keeps this file small and
  * prevents silent drift when swaync updates its base stylesheet.
+ *
+ * Shared desktop palette is canonical in waybar/.config/waybar/colors.css --
+ * keep --text-color / --cc-bg in sync with it by hand.
  */
 @import "/etc/xdg/swaync/style.css";
 
 /* --- Theme tokens (swaync >= 0.10, GTK4) --- */
 :root {
-    --cc-bg: rgba(46, 46, 46, 0.6);
+    --cc-bg: rgba(46, 46, 46, 0.6); /* dark base #2e2e2e (shared) */
     --noti-bg-alpha: 0.95;
     --noti-bg-alt: var(--noti-bg-darker); /* referenced by .per-app-volume but undefined upstream */
     --noti-bg-focus: transparent;
-    --text-color: rgb(245, 245, 245);
+    --text-color: rgb(245, 245, 245); /* shared fg #f5f5f5 */
     --bg-selected: transparent;
     --notification-icon-size: 32px;
     --font-size-body: 14px;
     --mpris-album-art-icon-size: 48px;
+}
+
+/* --- Font (upstream sets none; match waybar / wofi) --- */
+* {
+    font-family: "Noto Sans", "NotoSans NFP Med", sans-serif;
 }
 
 /* --- Notifications --- */
