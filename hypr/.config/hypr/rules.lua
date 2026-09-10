@@ -25,6 +25,7 @@ rule({ name = "windowrule-3", animation = "popin", match = { class = "kitty" } }
 
 hl.layer_rule({ name = "layerrule-1", blur = true, animation = "slide right", ignore_alpha = 0, match = { namespace = "swaync-control-center" } })
 hl.layer_rule({ name = "layerrule-2", ignore_alpha = 0, match = { namespace = "swaync-notification-window" } })
+
 rule({ name = "windowrule-4", opacity = "0.95 0.85", match = { class = "^(org.gnome.Nautilus)$" } })
 rule({ name = "windowrule-5", float = true, center = true, size = { 875, 600 }, match = { tag = "floating-window" } })
 rule({ name = "windowrule-6", tag = "+floating-window", match = { class = "(blueman-manager|xdg-desktop-portal-gtk|About|TUI.float)" } })
