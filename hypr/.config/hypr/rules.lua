@@ -47,6 +47,13 @@ rule({ name = "windowrule-14", move = { "cursor_x-(window_w*0.5)", "cursor_y-(wi
 rule({ name = "windowrule-15", float = true, size = { 1600, 900 }, center = true, match = { class = "^(blender)$" } })
 rule({ name = "windowrule-16", float = true, center = true, match = { class = "^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$" } })
 rule({
+    name = "windowrule-19",
+    float = true,
+    center = true,
+    size = { 1440, 900 },
+    match = { class = "^(chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default|crx_kjbdgfilnfhdoflbpgamdcdgpehopbep)$" },
+})
+rule({
     name = "windowrule-18",
     float = true,
     center = true,

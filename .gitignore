@@ -1,1 +1,5 @@
 config.json
+**/.config/gws/
+__pycache__/
+.ruff_cache/
+ai/.agents/skills/synced

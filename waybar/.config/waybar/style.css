@@ -33,6 +33,7 @@ menu menuitem {
 
 /* --- General Module Styling --- */
 #clock,
+#custom-clock,
 #custom-weather,
 #tray,
 #wireplumber,
@@ -61,6 +62,7 @@ menu menuitem {
 
 /* --- Module Hover Effect --- */
 #clock:hover,
+#custom-clock:hover,
 #wireplumber:hover,
 #custom-weather:hover,
 #custom-power:hover,
@@ -104,8 +106,14 @@ menu menuitem {
 }
 
 /* --- Module States & Specifics --- */
-#clock {
+#clock,
+#custom-clock {
     font-weight: 600;
+}
+/* Event starts within SOON_MINUTES (custom-clock.py) */
+#custom-clock.soon {
+    background-color: @module_active_bg;
+    border-radius: 8px;
 }
 #custom-weather {
     font-weight: 600;

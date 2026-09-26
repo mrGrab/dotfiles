@@ -3,6 +3,11 @@ local fileManager = "nautilus --new-window"
 local menu = "pkill -x wofi || wofi --show drun"
 local mainMod = "SUPER"
 
+-- Float size per window class for SUPER+V (keep in sync with rules.lua)
+local floatSizes = {
+    ["chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default"] = { 1440, 900 }, -- Google Calendar PWA
+}
+
 hl.bind(mainMod .. " + grave", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exit())
@@ -14,14 +19,28 @@ hl.bind(mainMod .. " + V", function()
     end
 
     if window.floating then
-        hl.dispatch(hl.dsp.window.float({ action = "unset", window = window }))
+        hl.dispatch(
+            hl.dsp.window.float({
+                action = "unset",
+                window = window,
+            })
+        )
         return
     end
 
     local monitor = hl.get_active_monitor()
     hl.dispatch(hl.dsp.window.float({ action = "set", window = window }))
 
-    if monitor ~= nil then
+    local size = floatSizes[window.class]
+    if size ~= nil then
+        hl.dispatch(
+            hl.dsp.window.resize({
+                x = size[1],
+                y = size[2],
+                window = window,
+            }))
+        hl.dispatch(hl.dsp.window.center({ window = window }))
+    elseif monitor ~= nil then
         hl.dispatch(hl.dsp.window.resize({
             x = math.floor(monitor.width * 0.97),
             y = math.floor(monitor.height * 0.97),

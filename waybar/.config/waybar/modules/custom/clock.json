@@ -1,0 +1,11 @@
+{
+  "custom/clock": {
+    "exec": "~/.config/waybar/scripts/custom-clock.py",
+    "return-type": "json",
+    "format": "{}",
+    "restart-interval": 10,
+    "on-click": "~/.config/waybar/scripts/custom-clock.py toggle",
+    "on-click-right": "~/.config/waybar/scripts/calendar-app.sh",
+    "on-click-middle": "~/.config/waybar/scripts/custom-clock.py refresh"
+  }
+}

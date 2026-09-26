@@ -2,20 +2,25 @@
 """
 Waybar custom weather module using Google Weather API.
 
-Fetches and formats weather data for Waybar as JSON.
+Prints current conditions for Waybar as JSON.
 
 Requirements:
     - Google Cloud project with Weather API enabled
-    - API key with Weather API access
-    - pip install requests click
+    - API key with Weather API access, in $GOOGLE_API_KEY
 """
 
+import argparse
+import html
 import json
+import os
 import sys
 import time
+import urllib.parse
+import urllib.request
+from http.client import HTTPResponse
+from typing import cast
 
-import click
-import requests
+API_URL = "https://weather.googleapis.com/v1/currentConditions:lookup"
 
 # Weather condition to icon mapping
 WEATHER_ICONS = {
@@ -62,192 +67,176 @@ WEATHER_ICONS = {
     "DEFAULT": "🌡️",
 }
 
+UNITS = {
+    "CELSIUS": "°C",
+    "FAHRENHEIT": "°F",
+    "MILES": " mi",
+    "KILOMETERS": " km",
+    "KILOMETERS_PER_HOUR": " km/h",
+    "MILES_PER_HOUR": " mph",
+    "METERS_PER_SECOND": " m/s",
+    "MILLIMETERS": " mm",
+    "INCHES": " in",
+}
 
-def print_error(text: str, tooltip: str, exit_code: int = 1):
-    """Prints a JSON error message for Waybar and exits."""
-    output = {"text": text, "tooltip": tooltip, "class": "error"}
-    print(json.dumps(output))
-    sys.exit(exit_code)
+
+class Args(argparse.Namespace):
+    api_key: str | None = None
+    latitude: str = ""
+    longitude: str = ""
+    units: str = "metric"
+
+
+def dig(data: object, *keys: str) -> object:
+    """Walk nested JSON objects; None if any key is missing."""
+    for key in keys:
+        if not isinstance(data, dict):
+            return None
+        data = cast("dict[str, object]", data).get(key)
+    return data
+
+
+def unit(data: object, *keys: str) -> str:
+    """Short unit suffix for the API unit at keys; "" if absent."""
+    name = dig(data, *keys)
+    return UNITS.get(name, f" {name}") if isinstance(name, str) else ""
 
 
 def get_icon(condition_type: str, is_daytime: bool) -> str:
     """Return icon for condition, adjusted for day/night."""
     icon = WEATHER_ICONS.get(condition_type.upper(), WEATHER_ICONS["DEFAULT"])
-
-    # Basic day/night tweak
     if not is_daytime and icon in ("☀️", "🌤️"):
         icon = "🌙"
     return icon
 
 
-def format_unit(unit: str) -> str:
-    """Convert metric unit to short form."""
-    unit_map = {
-        "CELSIUS": "°C",
-        "FAHRENHEIT": "°F",
-        "MILES": "mi",
-        "KILOMETERS": "km",
-        "KILOMETERS_PER_HOUR": "km/h",
-        "MILES_PER_HOUR": "mph",
-        "METERS_PER_SECOND": "m/s",
-        "MILLIMETERS": "mm",
-        "INCHES": " in",
-    }
-    return unit_map.get(unit, unit)
+def show(value: object, suffix: str = "", prefix: str = "") -> str | None:
+    return None if value is None else f"{prefix}{value}{suffix}"
 
 
-def fetch_weather(api_key, latitude, longitude, units):
-    """Fetch weather data from Google Weather API."""
-    url = "https://weather.googleapis.com/v1/currentConditions:lookup"
-
-    params = {
-        "key": api_key,
-        "location.latitude": latitude,
-        "location.longitude": longitude,
-        "unitsSystem": units.upper(),
-        "alt": "json",
-    }
-
-    try:
-        response = requests.get(url, params=params, timeout=10)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print_error("❌", f"Network/API error: {e}")
-    except Exception as e:
-        print_error("❌", f"Unexpected error: {e}")
+def fetch_weather(api_key: str, latitude: str, longitude: str, units: str) -> object:
+    """Current conditions JSON; raises OSError or ValueError on failure."""
+    query = urllib.parse.urlencode(
+        {
+            "location.latitude": latitude,
+            "location.longitude": longitude,
+            "unitsSystem": units.upper(),
+        }
+    )
+    # key in a header, not the URL, so it never appears in error messages
+    request = urllib.request.Request(
+        f"{API_URL}?{query}", headers={"X-Goog-Api-Key": api_key}
+    )
+    with cast(HTTPResponse, urllib.request.urlopen(request, timeout=10)) as response:
+        return cast(object, json.load(response))
 
 
-def format_output(data):
+def format_output(data: object) -> dict[str, str]:
     """Format weather data for Waybar output."""
+    temp = dig(data, "temperature", "degrees")
+    if temp is None:
+        return {"text": "n/a", "tooltip": "Temperature unavailable"}
+
+    t = unit(data, "temperature", "unit")
+    condition_type = dig(data, "weatherCondition", "type")
+    icon = get_icon(
+        condition_type if isinstance(condition_type, str) else "DEFAULT",
+        dig(data, "isDaytime") is not False,
+    )
+    condition = dig(data, "weatherCondition", "description", "text") or "Unknown"
+    history = dig(data, "currentConditionsHistory")
+    wind = dig(data, "wind")
+    precip = dig(data, "precipitation")
+    precip_type = str(dig(precip, "probability", "type") or "precipitation")
+
+    tooltip = [f"<b><span size='large'>{icon} {html.escape(str(condition))}</span></b>"]
+
+    def section(title: str, *rows: tuple[str, str | None]) -> None:
+        """Add a titled block; rows with None text (field absent) are skipped."""
+        lines = [f"  {k}<tt>{html.escape(v)}</tt>" for k, v in rows if v is not None]
+        if lines:
+            tooltip.extend([f"\n<b>{title}</b>", *lines])
+
+    # 0 is a real value everywhere except gusts and thunder, where it's noise
+    gust = dig(wind, "gust", "value") or None
+    thunder = dig(data, "thunderstormProbability") or None
+    chance = f"% of {precip_type.replace('_', ' ').lower()}"
+
+    section(
+        "🌡️ Temperature",
+        ("Current:\t", show(temp, t)),
+        ("Feels Like:\t", show(dig(data, "feelsLikeTemperature", "degrees"), t)),
+        ("High:\t\t", show(dig(history, "maxTemperature", "degrees"), t)),
+        ("Low:\t\t", show(dig(history, "minTemperature", "degrees"), t)),
+        ("Wind Chill:\t", show(dig(data, "windChill", "degrees"), t)),
+        ("Heat Index:\t", show(dig(data, "heatIndex", "degrees"), t)),
+    )
+    section(
+        "🌬️ Atmosphere",
+        ("Humidity:\t", show(dig(data, "relativeHumidity"), "%")),
+        ("Dew Point:\t", show(dig(data, "dewPoint", "degrees"), t)),
+        ("Pressure:\t", show(dig(data, "airPressure", "meanSeaLevelMillibars"), " mb")),
+        (
+            "Visibility:\t",
+            show(dig(data, "visibility", "distance"), unit(data, "visibility", "unit")),
+        ),
+        ("Cloud Cover:\t", show(dig(data, "cloudCover"), "%")),
+        ("UV Index:\t", show(dig(data, "uvIndex"))),
+    )
+    section(
+        "💨 Wind",
+        ("Speed:\t\t", show(dig(wind, "speed", "value"), unit(wind, "speed", "unit"))),
+        ("Gusts:\t\t", show(gust, unit(wind, "gust", "unit"), "up to ")),
+    )
+    section(
+        "💧 Precipitation",
+        ("Chance:\t", show(dig(precip, "probability", "percent"), chance)),
+        (
+            "Amount (1hr):\t",
+            show(dig(precip, "qpf", "quantity"), unit(precip, "qpf", "unit")),
+        ),
+        (
+            "Snow (1hr):\t",
+            show(dig(precip, "snowQpf", "quantity"), unit(precip, "snowQpf", "unit")),
+        ),
+        ("Thunder:\t", show(thunder, "% chance")),
+    )
+    tooltip.append(f"\n<i><small>Data pulled:\t{time.strftime('%H:%M:%S')}</small></i>")
+
     try:
-        # Extract temperature data
-        temp = data.get("temperature", {}).get("degrees")
-        if temp is None:
-            return {"text": "n/a", "tooltip": "Temperature unavailable"}
-
-        unit = data.get("temperature", {}).get("unit")
-        unit_char = format_unit(unit)
-
-        # Extract condition data
-        condition = data.get("weatherCondition", {})
-        condition_text = condition.get("description", {}).get("text", "Unknown")
-        condition_type = condition.get("type", "DEFAULT")
-        is_daytime = data.get("isDaytime", True)
-        icon = get_icon(condition_type, is_daytime)
-
-        # Format main text
-        text = f"{icon} {temp:.0f}{unit_char}"
-
-        # Build Tooltip
-        tooltip = []
-        tooltip.append(f"<b><span size='large'>{icon} {condition_text}</span></b>")
-
-        # Temperature section
-        tooltip.append("\n<b>🌡️ Temperature</b>")
-        tooltip.append(f"  Current:\t<tt>{temp}{unit_char}</tt>")
-
-        if feels_like := data.get("feelsLikeTemperature", {}).get("degrees"):
-            tooltip.append(f"  Feels Like:\t<tt>{feels_like}{unit_char}</tt>")
-
-        if history := data.get("currentConditionsHistory"):
-            if max_temp := history.get("maxTemperature", {}).get("degrees"):
-                tooltip.append(f"  High:\t\t<tt>{max_temp}{unit_char}</tt>")
-
-            if min_temp := history.get("minTemperature", {}).get("degrees"):
-                tooltip.append(f"  Low:\t\t<tt>{min_temp:.1f}{unit_char}</tt>")
-
-        if wind_chill := data.get("windChill", {}).get("degrees"):
-            tooltip.append(f"  Wind Chill:\t<tt>{wind_chill}{unit_char}</tt>")
-
-        if heat_index := data.get("heatIndex", {}).get("degrees"):
-            tooltip.append(f"  Heat Index:\t<tt>{heat_index}{unit_char}</tt>")
-
-        # Atmosphere Section
-        tooltip.append("\n<b>🌬️ Atmosphere</b>")
-
-        if humidity := data.get("relativeHumidity"):
-            tooltip.append(f"  Humidity:\t<tt>{humidity}%</tt>")
-
-        if dew_point := data.get("dewPoint", {}).get("degrees"):
-            tooltip.append(f"  Dew Point:\t<tt>{dew_point}{unit_char}</tt>")
-
-        if pressure := data.get("airPressure", {}).get("meanSeaLevelMillibars"):
-            tooltip.append(f"  Pressure:\t<tt>{pressure} mb</tt>")
-
-        if visibility := data.get("visibility", {}).get("distance"):
-            vis_unit = format_unit(data.get("visibility", {}).get("unit"))
-            tooltip.append(f"  Visibility:\t<tt>{visibility} {vis_unit}</tt>")
-
-        if cloud_cover := data.get("cloudCover"):
-            tooltip.append(f"  Cloud Cover: <tt>{cloud_cover}%</tt>")
-
-        if uv_index := data.get("uvIndex"):
-            tooltip.append(f"  UV Index:\t<tt>{uv_index}</tt>")
-
-        # Wind Section
-        if wind := data.get("wind"):
-            tooltip.append("\n<b>💨 Wind</b>")
-
-            if speed := wind.get("speed", {}).get("value"):
-                speed_unit = format_unit(wind.get("speed", {}).get("unit"))
-                tooltip.append(f"  Speed:\t\t<tt>{speed} {speed_unit}</tt>")
-
-            if gust := wind.get("gust", {}).get("value"):
-                gust_unit = format_unit(wind.get("gust", {}).get("unit"))
-                tooltip.append(f"  Gusts:\t\t<tt>up to {gust} {gust_unit}</tt>")
-
-        # Precipitation Section
-        tooltip.append("\n<b>💧 Precipitation</b>")
-        precip = data.get("precipitation", {})
-        if prob := precip.get("probability", {}).get("percent"):
-            prob_type = (
-                precip.get("probability", {}).get("type").replace("_", " ").lower()
-            )
-            tooltip.append(f"  Chance:\t<tt>{prob}% of {prob_type}</tt>")
-
-            if qpf := precip.get("qpf", {}).get("quantity"):
-                qpf_unit = format_unit(precip.get("qpf", {}).get("unit"))
-                tooltip.append(f"  Amount (1hr):\t<tt>{qpf}{qpf_unit}</tt>")
-
-            if qpf_snow := precip.get("snowQpf", {}).get("quantity"):
-                qpf_snow_unit = format_unit(precip.get("snowQpf", {}).get("unit"))
-                tooltip.append(f"  Snow (1hr):\t<tt>{qpf_snow}{qpf_snow_unit}</tt>")
-
-        if thunder_prob := data.get("thunderstormProbability"):
-            tooltip.append(f"  Thunder:\t<tt>{thunder_prob}% chance</tt>")
-
-        # Timestamp - when data was pulled
-        current_time = time.strftime("%H:%M:%S")
-        tooltip.append(f"\n<i><small>Data pulled:\t{current_time}</small></i>")
-
-        final_tooltip = "\n".join(tooltip)
-        return {"text": text, "tooltip": final_tooltip, "class": "weather"}
-
-    except (KeyError, TypeError, AttributeError) as e:
-        return {"text": "❓", "tooltip": f"Error parsing weather data: {str(e)}"}
+        text = f"{icon} {temp:.0f}{t}"
+    except (TypeError, ValueError):  # non-numeric temperature
+        text = f"{icon} {temp}{t}"
+    return {"text": text, "tooltip": "\n".join(tooltip), "class": "weather"}
 
 
-@click.command()
-@click.option(
-    "--api-key",
-    required=True,
-    envvar="GOOGLE_API_KEY",
-    help="Google API key (can also set GOOGLE_API_KEY env var)",
-)
-@click.option("--latitude", required=True, help="Latitude coordinate")
-@click.option("--longitude", required=True, help="Longitude coordinate")
-@click.option(
-    "--units",
-    type=click.Choice(["metric", "imperial"], case_sensitive=False),
-    default="metric",
-    help="Unit system (metric or imperial)",
-)
-def main(api_key, latitude, longitude, units):
-    """Fetch and display weather data for Waybar."""
-    weather_data = fetch_weather(api_key, latitude, longitude, units)
-    output = format_output(weather_data)
-    print(json.dumps(output))
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Google Weather for Waybar.")
+
+    # prefer $GOOGLE_API_KEY: argv is visible to other processes
+    _ = parser.add_argument("--api-key", help="default: $GOOGLE_API_KEY")
+    _ = parser.add_argument("--latitude", required=True)
+    _ = parser.add_argument("--longitude", required=True)
+    _ = parser.add_argument(
+        "--units", type=str.lower, choices=["metric", "imperial"], default="metric"
+    )
+
+    args = parser.parse_args(namespace=Args())
+    api_key = args.api_key or os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        parser.error("--api-key or $GOOGLE_API_KEY is required")
+
+    try:
+        data = fetch_weather(api_key, args.latitude, args.longitude, args.units)
+    except (OSError, ValueError) as e:
+        error = {
+            "text": "❌",
+            "tooltip": html.escape(f"Network/API error: {e}"),
+            "class": "error",
+        }
+        print(json.dumps(error))
+        sys.exit(1)
+    print(json.dumps(format_output(data)))
 
 
 if __name__ == "__main__":

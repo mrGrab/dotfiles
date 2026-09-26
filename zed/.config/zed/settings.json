@@ -19,7 +19,7 @@
     "claude-acp": {
       "default_config_options": {
         "mode": "auto",
-        "fast": true,
+        "fast": false,
         "model": "default",
       },
       "type": "registry",

@@ -14,11 +14,12 @@
     "~/.config/waybar/modules/custom/power.json",
     "~/.config/waybar/modules/custom/notification.json",
     "~/.config/waybar/modules/custom/weather.json",
+    "~/.config/waybar/modules/custom/clock.json",
     "~/.config/waybar/modules/tray.json",
   ],
 
   "modules-left": ["hyprland/workspaces", "hyprland/window"],
-  "modules-center": ["clock", "custom/weather"],
+  "modules-center": ["custom/clock", "custom/weather"],
   "modules-right": [
     "tray",
     "hyprland/language",
