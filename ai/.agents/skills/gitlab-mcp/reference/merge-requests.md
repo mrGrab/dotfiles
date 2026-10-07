@@ -20,6 +20,7 @@ get_merge_request           -> full MR details (by IID or branch name)
 list_merge_requests         -> list with filters (state, labels, author, etc.)
   - without project_id: current user's MRs across all projects
   - with project_id: MRs in that project
+list_group_merge_requests   -> list MRs across a group and its subgroups
 get_merge_request_conflicts -> check for merge conflicts
 list_merge_request_pipelines -> list pipelines attached to an MR
 ```
@@ -51,10 +52,11 @@ get_merge_request_approval_state -> check who approved, rules status
 ```
 merge_merge_request
   project_id: "my-group/my-project"
-  mergeRequestIid: 42
+  merge_request_iid: 42
+  sha: "<head commit from get_merge_request>"
   should_remove_source_branch: true
   squash: true
-  merge_when_pipeline_succeeds: true
+  auto_merge: true
 ```
 
 **Warning**: `merge_merge_request` is destructive - cannot be undone.
@@ -81,6 +83,7 @@ delete_merge_request_note       -> remove comment
 
 ```
 mr_discussions                         -> list all discussions
+get_merge_request_discussion           -> get one discussion by ID
 create_merge_request_discussion_note   -> reply to thread
 update_merge_request_discussion_note   -> edit reply
 delete_merge_request_discussion_note   -> remove reply

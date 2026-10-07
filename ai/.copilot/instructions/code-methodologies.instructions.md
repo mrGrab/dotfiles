@@ -1,20 +1,20 @@
 ---
 name: "Code Methodologies"
-description: "Core software design principles and engineering standards applied across all codebases."
+description: "Software design principles and engineering rules for all codebases."
 applyTo: "**"
 ---
 
 # Global Code Methodologies
 
-When generating, refactoring, or reviewing code, apply these proven approaches in exact order of priority:
+When you write, change, or review code, follow these principles in this order:
 
-1. **KISS (Keep It Simple, Stupid):** Prefer the simplest working solution. Avoid premature abstractions, complex inheritance hierarchies, and overengineering.
-2. **YAGNI (You Aren't Gonna Need It):** Never implement unrequested features, speculative configuration options, or "future-proofing" wrapper logic.
-3. **Pragmatic SOLID:** Use composition over inheritance. Apply SOLID principles only where they directly reduce maintenance overhead or improve testability.
-4. **DRY (Don't Repeat Yourself):** Eliminate duplication when it adds clear structural value, but favor slight duplication over the wrong abstraction.
+1. **KISS (Keep It Simple):** Choose the simplest solution that works. Avoid early abstractions, complex inheritance, and unnecessary complexity.
+2. **YAGNI (You Aren't Gonna Need It):** Do not add unrequested features, speculative options, or wrappers for possible future needs.
+3. **Pragmatic SOLID:** Prefer composition over inheritance. Apply SOLID principles only when they directly improve maintainability or testing.
+4. **DRY (Don't Repeat Yourself):** Remove duplication when doing so improves the design. Keep some duplication rather than add the wrong abstraction.
 
 ## Core Engineering Guardrails
 
-- **Standard Library First:** Prefer standard library modules before pulling in third-party dependencies.
-- **Fail-Fast & Idempotent:** Automation, scripts, and API handlers must fail immediately with clear error messages and be safe to re-run.
-- **Self-Documenting Code:** Write clear variable/function names and explicit types. Reserve docstrings and comments strictly for non-obvious logic or business contracts.
+- **Standard library first:** Prefer standard library modules over third-party dependencies.
+- **Fail fast and be idempotent:** Automation, scripts, and API handlers must stop on errors and show clear messages. Repeated runs must be safe.
+- **Self-documenting code:** Use clear names and explicit types. Add comments and docstrings only to explain non-obvious logic or important requirements.
