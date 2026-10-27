@@ -13,16 +13,38 @@
 window#waybar {
     background: @bar_bg;
     color: @bar_fg;
+    border-radius: 0;
 }
 
 /* --- Tooltips & Menus --- */
 tooltip,
+tooltip.background,
+tooltip.background.csd,
 menu {
     background: @tooltip_bg;
     color: @tooltip_fg;
     border: 1px solid @tooltip_border;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+}
+
+menu {
+    border-radius: 12px;
+}
+
+/* Draw the tooltip shadow on its decoration, where GTK reserves shadow space. */
+tooltip,
+tooltip.background,
+tooltip.background.csd {
+    box-shadow: none;
+}
+
+tooltip decoration,
+tooltip.csd decoration {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 tooltip label,
@@ -35,6 +57,7 @@ menu menuitem {
 #clock,
 #custom-clock,
 #custom-weather,
+#custom-ai-usage,
 #tray,
 #wireplumber,
 #custom-power,
@@ -65,6 +88,7 @@ menu menuitem {
 #custom-clock:hover,
 #wireplumber:hover,
 #custom-weather:hover,
+#custom-ai-usage:hover,
 #custom-power:hover,
 #custom-notification:hover,
 #language:hover,
@@ -80,6 +104,12 @@ menu menuitem {
 }
 
 #workspaces button {
+    /* Reset theme button styling, including Chromium-specific rules. */
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    text-shadow: none;
     padding: 0px 10px;
     font-weight: 600;
     color: @bar_fg;
@@ -119,10 +149,22 @@ menu menuitem {
     font-weight: 600;
 }
 
+/* Quota thresholds and states set by custom-ai-usage.py */
+#custom-ai-usage.warning {
+    color: @caution_color;
+}
+#custom-ai-usage.critical {
+    color: @warning_color;
+}
+#custom-ai-usage.stale,
+#custom-ai-usage.error {
+    opacity: 0.5;
+}
+
 #language {
     background-color: @bar_fg;
     color: @tooltip_fg;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 700;
     padding: 0px 6px 2px 6px;
 }
@@ -133,6 +175,38 @@ menu menuitem {
 
 #tray {
     min-width: 0;
+}
+
+/* Match the tray's 18px icon gap: 18px icons in 36px control slots. */
+.modules-right #custom-ai-usage,
+.modules-right #tray,
+.modules-right #wireplumber,
+.modules-right #custom-power,
+.modules-right #custom-notification {
+    padding: 0 9px;
+    margin: 3px 0;
+}
+
+.modules-right #wireplumber,
+.modules-right #custom-power,
+.modules-right #custom-notification {
+    min-width: 18px;
+}
+
+.modules-right #wireplumber {
+    font-size: 18px;
+    /* Give the larger glyph room inside the existing bar height. */
+    margin: 1px 0;
+}
+
+/* A slightly wider language badge, with compact vertical spacing. */
+.modules-right #language {
+    font-size: 14px;
+    border-radius: 8px;
+    min-width: 24px;
+    min-height: 20px;
+    padding: 0 4px;
+    margin: 4px;
 }
 
 /* --- Window Title --- */

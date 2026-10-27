@@ -1,0 +1,13 @@
+{
+  "custom/ai-usage": {
+    "exec": "~/.config/waybar/scripts/custom-ai-usage.py --primary claude",
+    "return-type": "json",
+    "interval": 900,
+    "signal": 9,
+    "format": "{}",
+    "escape": false,
+    // "on-click": "https://chatgpt.com/settings/usage",
+    "on-click": "xdg-open https://claude.ai/settings/usage",
+    "on-click-right": "pkill -RTMIN+9 waybar"
+  }
+}

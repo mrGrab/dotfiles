@@ -4,3 +4,4 @@ __pycache__/
 .ruff_cache/
 ai/.agents/skills/synced
 kitty/.config/kitty/local.conf
+**/.trash

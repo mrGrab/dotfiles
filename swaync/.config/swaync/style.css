@@ -1,60 +1,261 @@
-/*
- * ## SwayNC Style
- *
- * Thin override on top of the packaged theme. Import the distro default,
- * then only redefine what actually differs. Keeps this file small and
- * prevents silent drift when swaync updates its base stylesheet.
- *
- * Shared desktop palette is canonical in waybar/.config/waybar/colors.css --
- * keep --text-color / --cc-bg in sync with it by hand.
- */
+/* WhiteSur Nord glass cards. Retain the packaged layout and widget behavior. */
 @import "/etc/xdg/swaync/style.css";
 
-/* --- Theme tokens (swaync >= 0.10, GTK4) --- */
 :root {
-    --cc-bg: rgba(46, 46, 46, 0.6); /* dark base #2e2e2e (shared) */
-    --noti-bg-alpha: 0.95;
-    --noti-bg-alt: var(--noti-bg-darker); /* referenced by .per-app-volume but undefined upstream */
+    --accent: #5271ad;
+    --glass-bg: rgba(251, 252, 253, 0.92);
+    --cc-bg: transparent;
+    --noti-border-color: rgba(43, 48, 59, 0.12);
+    --noti-bg: 251, 252, 253;
+    --noti-bg-alpha: 0.92;
+    --noti-bg-darker: rgba(43, 48, 59, 0.06);
+    --noti-bg-alt: var(--noti-bg-darker);
+    --noti-bg-hover: rgba(43, 48, 59, 0.06);
     --noti-bg-focus: transparent;
-    --text-color: rgb(245, 245, 245); /* shared fg #f5f5f5 */
-    --bg-selected: transparent;
+    --noti-close-bg: rgba(43, 48, 59, 0.08);
+    --noti-close-bg-hover: rgba(43, 48, 59, 0.16);
+    --text-color: #2b303b;
+    --text-color-disabled: #505868;
+    --bg-selected: var(--accent);
+    --border-radius: 12px;
+    --notification-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.65);
     --notification-icon-size: 32px;
     --font-size-body: 14px;
+    --font-size-summary: 15px;
+    /* The packaged stylesheet still uses these misspelled transition tokens. */
+    --hover-tranistion: background 120ms ease-out;
+    --group-collapse-tranistion: opacity 120ms ease-out;
+    --hover-transition: var(--hover-tranistion);
+    --group-collapse-transition: var(--group-collapse-tranistion);
+    --mpris-album-art-overlay: transparent;
+    --mpris-button-hover: rgba(43, 48, 59, 0.08);
     --mpris-album-art-icon-size: 48px;
+    --mpris-album-art-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Font (upstream sets none; match waybar / wofi) --- */
 * {
     font-family: "Noto Sans", "NotoSans NFP Med", sans-serif;
+    font-size: 14px;
 }
 
-/* --- Notifications --- */
-.notification-row .notification-background .notification .notification-default-action {
-    padding: 10px;
+.control-center,
+.control-center .control-center-list,
+.floating-notifications,
+.blank-window {
+    background: transparent;
+    color: var(--text-color);
 }
 
-.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
-    font-size: var(--font-size-body);
-    font-weight: lighter;
+/* Transparent gutters let rounded card shadows fade before the clip edge. */
+.control-center {
+    padding: 12px 0 16px;
+}
+
+/* Six pixels above and below each card give adjacent cards a 12px gap. */
+.notification-row .notification-background {
+    padding: 6px 12px;
+}
+
+.floating-notifications {
+    min-width: 400px;
+    padding: 10px 16px;
+}
+
+.control-center .control-center-list-placeholder {
+    /* Collapse the installed template's 96px icon plus 12px child spacing. */
+    opacity: 0;
+    background: transparent;
+    padding: 0;
+    margin: -108px 0 0;
+    border: none;
+    box-shadow: none;
+}
+
+.control-center .control-center-list-placeholder label {
+    font-size: 0;
+}
+
+/* Allow an empty notifications page to shrink below scrollbar minimums. */
+.widget-notifications scrollbar,
+.widget-notifications scrollbar slider {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.control-center .notification-row:focus,
+.control-center .notification-group:focus {
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.control-center .notification-default-action:focus-visible {
+    outline: 1px solid rgba(43, 48, 59, 0.25);
+    outline-offset: -2px;
+    box-shadow: none;
+}
+
+.floating-notifications .notification,
+.control-center .control-center-list .notification {
+    box-shadow: var(--notification-shadow);
+}
+
+.notification-row
+    .notification-background
+    .notification
+    .notification-default-action {
+    padding: 12px;
+}
+
+.notification-row
+    .notification-background
+    .notification
+    .notification-default-action
+    .notification-content
+    .text-box
+    .time {
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--text-color-disabled);
+}
+
+.notification-group {
+    transition: opacity 120ms ease-out;
+}
+
+.notification-group .notification-group-buttons,
+.notification-group .notification-group-headers {
+    margin: 0 12px;
 }
 
 .notification-group .notification-group-headers .notification-group-header {
     font-size: var(--font-size-summary);
+    font-weight: 600;
 }
 
-/* --- Widgets --- */
-.widget-title > button {
+/* Keep stacked cards legible without making their backgrounds opaque. */
+.notification-group.collapsed .notification-row .notification {
+    background: var(--glass-bg);
+}
+
+.notification-group.collapsed:hover
+    .notification-row:not(:only-child)
+    .notification {
+    background: rgba(243, 244, 246, 0.95);
+}
+
+.widget {
+    margin: 6px 12px;
+    padding: 12px;
+}
+
+.widget-dnd,
+.widget-mpris .widget-mpris-player {
+    background: var(--glass-bg);
     color: var(--text-color);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--notification-shadow);
+}
+
+.widget-dnd {
+    /* A compact, right-aligned control inside the fixed 400px column. */
+    margin-left: 200px;
+    margin-right: 12px;
+    margin-top: 0;
+    padding: 6px 10px;
+    border-radius: 999px;
+}
+
+.widget-dnd label {
+    font-size: 13px;
+}
+
+button {
+    background: rgba(43, 48, 59, 0.06);
+    color: var(--text-color);
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    text-shadow: none;
+    transition: background 120ms ease-out;
+}
+
+button:hover {
+    background: rgba(43, 48, 59, 0.12);
+}
+
+/* Packaged notification action buttons otherwise inherit the card radius. */
+.notification-row
+    .notification-background
+    .notification
+    .notification-action
+    > button {
+    border-radius: 8px;
+}
+
+button:disabled {
+    color: var(--text-color-disabled);
+    background: transparent;
+}
+
+.widget-dnd switch {
+    min-width: 36px;
+    min-height: 20px;
+    background: rgba(43, 48, 59, 0.18);
+    border: none;
+    box-shadow: none;
+}
+
+.widget-dnd switch:checked {
+    background: var(--accent);
+}
+
+.widget-dnd switch slider {
+    min-width: 16px;
+    min-height: 16px;
+    margin: 2px;
+    background: #ffffff;
+    border: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.widget-notifications,
+.widget-mpris {
+    margin: 0;
+    padding: 0;
+    background: transparent;
 }
 
 .widget-mpris .widget-mpris-player {
-    margin: 16px 0;
+    margin: 6px 12px;
+}
+
+/* Keep album art as a thumbnail so the glass card retains dark text contrast. */
+.widget-mpris .widget-mpris-player .mpris-background {
+    opacity: 0;
 }
 
 .widget-mpris .widget-mpris-player .mpris-overlay {
-    padding: 8px;
+    padding: 12px;
+    background: transparent;
+    color: var(--text-color);
 }
 
+.widget-mpris .widget-mpris-player .mpris-overlay label,
 .widget-mpris .widget-mpris-player .mpris-overlay > box > button {
     color: var(--text-color);
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-subtitle {
+    font-size: 13px;
+    color: var(--text-color-disabled);
 }

@@ -3,6 +3,6 @@
     "icon-size": 18,
     "spacing": 18,
     "show-passive-items": true,
-    "expand": true
+    "expand": false
   }
 }

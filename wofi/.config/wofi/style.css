@@ -1,26 +1,27 @@
 /*
  * ## Wofi Style
  *
- * Dark translucent launcher, matched to the waybar / swaync look.
- * Canonical palette: waybar/.config/waybar/colors.css -- keep the shared
- * values (fg #f5f5f5, accent #5294e2, dark base #2e2e2e) in sync by hand.
+ * Frosted light launcher matched to WhiteSur-Light-nord.
+ * Keep the #5271ad accent in sync with waybar/.config/waybar/colors.css.
  */
 
 /* Color Palette */
-@define-color theme_fg #f5f5f5; /* Light text (shared fg) */
-@define-color theme_accent #5294e2; /* Blue for selections (shared accent) */
+@define-color theme_fg #2b303b; /* WhiteSur Nord content text */
+@define-color theme_accent #5271ad; /* Blue for selections (WhiteSur Nord) */
 @define-color on_accent_fg #ffffff; /* Text/icons on the accent color */
+/* GTK 3 placeholders use this named color instead of the entry text color. */
+@define-color placeholder_text_color #505868;
 
-/* Surfaces (dark base #2e2e2e) */
-@define-color list_bg rgba(46, 46, 46, 0.85); /* Results list */
-@define-color input_bg rgba(46, 46, 46, 0.6); /* Search field */
-@define-color input_bg_focus rgba(46, 46, 46, 0.9); /* Search field, focused */
-@define-color entry_hover_bg alpha(@theme_fg, 0.15);
+/* WhiteSur Nord surfaces over compositor blur. */
+@define-color list_bg rgba(251, 252, 253, 0.88); /* Frosted content surface */
+@define-color input_bg rgba(243, 244, 246, 0.94);
+@define-color input_bg_focus rgba(251, 252, 253, 0.96);
+@define-color entry_hover_bg alpha(@theme_fg, 0.08);
 
 /* Global Settings */
 * {
     font-family: "Noto Sans", "NotoSans NFP Med", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     color: @theme_fg;
     border: none;
     outline: none;
@@ -28,7 +29,30 @@
 
 /* Main Window */
 window {
-    background-color: transparent;
+    background: transparent;
+    border-radius: 12px;
+}
+
+/* Paint the results background on the visible area, not the scrolling list. */
+#scroll {
+    /* Gutters on the measured widgets keep shadows inside the layer surface. */
+    margin: 0 12px 16px;
+    background: @list_bg;
+    border-radius: 12px;
+    border: 1px solid rgba(43, 48, 59, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        inset 0 -1px 0 rgba(43, 48, 59, 0.08);
+}
+
+#scroll viewport {
+    background: transparent;
+}
+
+/* A theme scrollbar minimum must not force a one-row menu to grow. */
+#scroll scrollbar.vertical slider {
+    min-height: 24px;
+    margin: 0;
 }
 
 /* Search Bar */
@@ -36,11 +60,11 @@ window {
     background-color: @input_bg;
     color: @theme_fg;
     padding: 5px 15px;
-    margin-bottom: 8px;
-    border-radius: 8px;
-    border: 1px solid transparent;
+    margin: 12px 12px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
     caret-color: @theme_accent;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 #input:focus {
@@ -50,20 +74,28 @@ window {
 
 /* Main Results List */
 #inner-box {
-    background-color: @list_bg;
-    border-radius: 8px;
+    background: transparent;
     padding: 8px;
 }
 
 #inner-box expander list {
-    background-color: @theme_accent;
+    background: transparent;
     padding-left: 25px;
 }
 
 /* Individual Entries */
 #entry {
+    /* Match the default 32px icons, including entries without an icon. */
+    min-height: 32px;
     padding: 5px;
-    border-radius: 6px;
+    border-radius: 8px;
+}
+
+/* Keep collapsed app actions the same height as ordinary entries. */
+#entry expander > title {
+    min-height: 32px;
+    padding: 0;
+    margin: 0;
 }
 
 #entry:hover {
@@ -72,7 +104,7 @@ window {
 
 #entry:selected {
     background-color: @theme_accent;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 /* Text inside the entry */

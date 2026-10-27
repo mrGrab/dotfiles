@@ -1,6 +1,6 @@
 # Waybar
 
-Waybar configuration for Hyprland: a single top bar on `DP-1` with workspaces, window title, a Google Calendar clock, weather, and system controls.
+Waybar configuration for Hyprland: a single top bar on `DP-1` with workspaces, window title, a Google Calendar clock, weather, AI usage, and system controls.
 
 ## Layout
 
@@ -17,12 +17,14 @@ waybar/.config/waybar/
 │   └── custom/
 │       ├── clock.json        # Google Calendar clock
 │       ├── weather.json      # Google Weather
+│       ├── ai-usage.json     # AI subscription quota
 │       ├── notification.json # swaync
 │       ├── power.json        # power menu (+ power_menu.xml)
 └── scripts/
     ├── custom-clock.py       # Google Calendar clock + reminders
     ├── calendar-app.sh       # focus-or-launch the Calendar app window
-    └── custom-weather.py     # weather
+    ├── custom-weather.py     # weather
+    └── custom-ai-usage.py    # AI subscription quota
 ```
 
 ## Modules
@@ -33,6 +35,7 @@ waybar/.config/waybar/
 | left     | `hyprland/window`     | Active window title                             |
 | center   | `custom/clock`        | [Google Calendar clock](#google-calendar-clock) |
 | center   | `custom/weather`      | Needs `GOOGLE_API_KEY` ([Weather](#weather))    |
+| right    | `custom/ai-usage`     | [AI usage](#ai-usage); click: usage page        |
 | right    | `tray`                |                                                 |
 | right    | `hyprland/language`   | Click to switch layout                          |
 | right    | `wireplumber`         | Right-click: pavucontrol, middle-click: mute    |
@@ -58,6 +61,26 @@ Icons need a Nerd Font (the style falls back to `NotoSans NFP Med`).
 3. Set your coordinates in `modules/custom/weather.json`.
 
 The module is hidden when the key is missing. The script uses only the Python standard library.
+
+## AI usage
+
+`custom/ai-usage` shows subscription quota: icon + usage % of the `--primary` provider in the bar (Claude/OpenAI: 5-hour window, Copilot: monthly premium requests), and every window of every configured provider, with reset countdowns, in the tooltip. It refreshes every 15 minutes; right-click to refresh now, left-click to open the usage page.
+
+| Provider  | Credentials                                             |
+| --------- | ------------------------------------------------------- |
+| `claude`  | `~/.claude/.credentials.json`, from `claude` login      |
+| `openai`  | `~/.codex/auth.json`, from `codex login` (ChatGPT plan) |
+| `copilot` | `GITHUB_COPILOT_TOKEN` in the session environment       |
+
+1. Set `--primary` and the matching `on-click` URL in `modules/custom/ai-usage.json`:
+   `https://claude.ai/settings/usage`, `https://chatgpt.com/codex/settings/usage`, or `https://github.com/settings/copilot/features`.
+2. For Copilot, export `GITHUB_COPILOT_TOKEN` in your session environment, outside this repo.
+
+Providers without credentials are left out of the tooltip. Classes: `low`, `warning` (≥75%), `critical` (≥90%), plus `stale` (showing cached data after a failed fetch) or `error` (no data at all). The last good data is cached in `~/.cache/waybar-ai-usage.json`.
+
+**Token refresh.** Claude and Codex access tokens expire after a few hours, and the CLIs only refresh them when used. When a token has expired, the script refreshes it and writes it back to the CLI's credentials file (only the token fields; the rest, e.g. MCP tokens, is kept). It skips this while that CLI is running (`pgrep -x claude` / `codex`), since refreshing rotates the refresh token and the running CLI would lose its session; the CLI refreshes it itself. If the refresh fails with `refresh_token_invalidated`, log in to the CLI again.
+
+**Limitations.** All three endpoints are undocumented and may change or break without notice. The script uses only the Python standard library.
 
 ---
 

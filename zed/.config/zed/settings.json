@@ -7,6 +7,12 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "collaboration_panel": {
+    "button": false
+  },
+  "outline_panel": {
+    "button": true
+  },
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
@@ -26,8 +32,7 @@
     },
     "codex-acp": {
       "default_config_options": {
-        "mode": "read-only",
-        "model": "gpt-5.6-luna",
+        "collaboration_mode": "plan",
       },
       "type": "registry",
     },
@@ -54,17 +59,20 @@
     },
   },
   "git_panel": {
+    "diff_stats": true,
+    "collapse_untracked_diff": true,
+    "button": true,
     "show_count_badge": false,
     "file_icons": false,
     "status_style": "icon",
-    "tree_view": true,
+    "tree_view": false,
     "dock": "left",
     "fallback_branch_name": "master",
   },
   "which_key": {
     "enabled": false,
   },
-  "diff_view_style": "split",
+  "diff_view_style": "unified",
   "edit_predictions": {
     "allow_data_collection": "yes",
     "provider": "zed",
@@ -73,6 +81,13 @@
     },
   },
   "agent": {
+    "threads_sidebar": {
+      "position": "right"
+    },
+    "max_content_width": 820.0,
+    "default_width": 640.0,
+    "flexible": false,
+    "button": true,
     "thinking_display": "preview",
     "auto_compact": {
       "threshold": "70%",
@@ -96,7 +111,6 @@
       "model": "auto",
       "enable_thinking": true,
     },
-    "sidebar_side": "right",
     "favorite_models": [],
     "model_parameters": [],
   },
@@ -104,11 +118,17 @@
     "git_status": false,
   },
   "project_panel": {
+    "hide_root": true,
+    "sticky_scroll": true,
+    "scrollbar": {
+      "show": "auto"
+    },
+    "indent_size": 16.0,
+    "folder_indicator": "icon",
     "git_status_indicator": true,
     "diagnostic_badges": true,
     "bold_folder_labels": true,
     "git_status": true,
-    "folder_icons": true,
     "file_icons": true,
     "entry_spacing": "standard",
     "default_width": 240.0,
@@ -117,7 +137,6 @@
   },
   "auto_update": false,
   "buffer_line_height": "standard",
-  "buffer_font_family": ".ZedMono",
   "telemetry": {
     "diagnostics": true,
     "metrics": false,

@@ -1,6 +1,11 @@
 show=drun
 width=500
-height=500
+# Five 42px rows, a 56px search area, and a 16px bottom shadow gutter.
+height=282
+dynamic_lines=false
+# Keep the launcher anchored at a fixed position.
+location=top
+yoffset=280
 use_search_box=false
 insensitive=true
 allow_images=true

@@ -1,0 +1,79 @@
+################################################################################
+
+# Core Model Selection
+
+################################################################################
+
+# Primary model used by Codex. Recommended example for most users: "gpt-6-sol".
+model = "gpt-6.1-sol"
+
+# Filesystem/network sandbox policy for tool calls:
+# - read-only (default)
+# - workspace-write
+# - danger-full-access (no sandbox; extremely risky)
+sandbox_mode = "workspace-write"
+
+# Web search mode: disabled | cached | indexed | live. Default: "cached"
+# cached serves results from a web search cache (an OpenAI-maintained index).
+# cached returns pre-indexed results; indexed gates external web access through
+# the search index; live fetches the most recent data.
+# If you use --yolo or another full access sandbox setting, web search defaults to live.
+web_search = "live"
+
+# Allow login-shell semantics for shell-based tools when they request `login = true`.
+# Default: true. Set false to force non-login shells and reject explicit login-shell requests.
+allow_login_shell = true
+
+# Reasoning effort advertised by the selected model; supported levels vary by model and client.
+model_reasoning_effort = "medium"
+# Optional reasoning effort override for Plan mode; use a level supported by the selected model.
+plan_mode_reasoning_effort = "high"
+# Reasoning summary: auto | concise | detailed | none
+model_reasoning_summary = "auto"
+
+# Communication style for supported models. Allowed values: none | friendly | pragmatic
+personality = "pragmatic"
+
+# Where to persist CLI login credentials: file (default) | keyring | auto
+cli_auth_credentials_store = "file"
+
+# Preferred store for MCP OAuth credentials: auto (default) | file | keyring
+mcp_oauth_credentials_store = "auto"
+
+mcp_oauth_callback_port = 12345
+
+[history]
+
+# save-all (default) | none
+persistence = "save-all"
+
+[tui]
+screen_reader_detection_done = true
+status_line = [
+    "model-with-reasoning",
+    "current-dir",
+    "thread-name",
+    "run-state",
+    "context-used",
+    "five-hour-limit",
+]
+status_line_use_colors = true
+theme = "one-half-dark"
+
+[tui.model_availability_nux]
+gpt-6-astra = 1
+"gpt-6.1-sol" = 4
+
+[agents]
+
+# Enable or disable multi-agent tools. Default: true
+enabled = true
+
+# Default model for spawned agents. An explicit spawn model takes precedence.
+default_subagent_model = "auto"
+
+# Default reasoning effort for spawned agents. An explicit spawn effort takes precedence.
+default_subagent_reasoning_effort = "medium"
+
+[projects."~/temp"]
+trust_level = "trusted"

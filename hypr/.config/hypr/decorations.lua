@@ -12,7 +12,7 @@ hl.config({
         allow_tearing = false,
     },
     decoration = {
-        rounding = 10,
+        rounding = 12,
         rounding_power = 2,
 
         active_opacity = 1.0,
@@ -28,7 +28,7 @@ hl.config({
             color = 0xee1a1a1a,
         },
         blur = {
-            enabled = false,
+            enabled = true,
             size = 3,
             passes = 1,
             vibrancy = 0.1696,
@@ -64,10 +64,10 @@ local animations
     { "fadeOut",             1.46, "almostLinear", nil },
     { "fade",                3.03, "quick",        nil },
     { "layers",              3.81, "easeOutQuint", nil },
-    { "layersIn",            4,    "easeOutQuint", "fade" },
+    { "layersIn",            0.8,  "easeOutQuint", "fade" },
     { "layersOut",           1.5,  "linear",       "fade" },
-    { "fadeLayersIn",        1.79, "almostLinear", nil },
-    { "fadeLayersOut",       1.39, "almostLinear", nil },
+    { "fadeLayersIn",        1.2,  "almostLinear", nil },
+    { "fadeLayersOut",       1.2,  "almostLinear", nil },
     { "workspaces",          1.94, "almostLinear", "slide 75%" },
     { "workspacesIn",        1.21, "almostLinear", "slide 75%" },
     { "workspacesOut",       1.94, "almostLinear", "slide 75%" },
