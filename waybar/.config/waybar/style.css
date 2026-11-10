@@ -110,12 +110,18 @@ menu menuitem {
     border-radius: 8px;
     box-shadow: none;
     text-shadow: none;
-    padding: 0px 10px;
+    padding: 0px 8px;
     font-weight: 600;
     color: @bar_fg;
     transition: all 0.2s ease;
-    min-width: 28px;
-    min-height: 24px;
+    min-width: 0;
+    min-height: 22px;
+}
+
+/* Gap between application icons in a workspace. */
+#workspaces .taskbar-window {
+    padding: 0 2px;
+    margin: 0;
 }
 
 #workspaces button:hover {
